@@ -1,4 +1,4 @@
-package telrun.utils;
+package predicate_10;
 
 public interface MyPredicate<T> {
 
@@ -23,5 +23,4 @@ public interface MyPredicate<T> {
 	static <T> MyPredicate<T> not(MyPredicate<T> target) {
 		return t -> !target.test(t);
 	}
-
 }

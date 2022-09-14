@@ -1,4 +1,4 @@
-package telrun.utils;
+package predicate_10;
 
 //public class PublicNegator <T> implements MyPredicate<T> {
 //	MyPredicate <T> originalPredicate;

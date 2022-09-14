@@ -16,13 +16,13 @@ public class QuickDictionaryNodesSolution {
 	Node<String> root = new Node<String>();
 
 	public String put(String key, String value) {
-//		try {
-//			if (!key.matches("[A-Z]*")) {
-//				throw new IllegalArgumentException(String.format(" <<%s>> doesn't match ([A-Z])*", key));
-//			}
-//		} catch (IllegalArgumentException e) {
-//			System.out.println(e.getMessage());
-//		}
+		try {
+			if (!key.matches("[A-Z]*")) {
+				throw new IllegalArgumentException(String.format(" <<%s>> doesn't match ([A-Z])*", key));
+			}
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+		}
 		
 		String res = get(key);
 		addArticle(key, value);

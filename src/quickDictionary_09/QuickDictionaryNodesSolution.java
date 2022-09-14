@@ -3,9 +3,11 @@ package quickDictionary_09;
 public class QuickDictionaryNodesSolution {
 	private static class Node<String> {
 		String obj;
-		Node<String>[] children = new Node [26];
+		Node<String>[] children = new Node[26];
+
 		Node() {
 		}
+
 		Node(String obj) {
 			this.obj = obj;
 		}
@@ -14,6 +16,14 @@ public class QuickDictionaryNodesSolution {
 	Node<String> root = new Node<String>();
 
 	public String put(String key, String value) {
+//		try {
+//			if (!key.matches("[A-Z]*")) {
+//				throw new IllegalArgumentException(String.format(" <<%s>> doesn't match ([A-Z])*", key));
+//			}
+//		} catch (IllegalArgumentException e) {
+//			System.out.println(e.getMessage());
+//		}
+		
 		String res = get(key);
 		addArticle(key, value);
 		return res;

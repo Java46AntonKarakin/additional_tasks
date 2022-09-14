@@ -1,6 +1,9 @@
 package quickDictionary_09.test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Test;
 
 import quickDictionary_09.QuickDictionaryArrayListsSolution;
@@ -37,5 +40,10 @@ class QuickDictionaryTests {
 			
 			System.out.println(dic1.get(listOfKeys[i]));
 		}
+	}
+	
+	@Test
+	void dictionaryPerformanceTest() {
+		
 	}
 }

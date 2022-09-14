@@ -38,7 +38,7 @@ public class QuickDictionaryNodesSolution {
 		for (char ch : keyCharArr) {
 			int index = ch - 65;
 			if (current.children[index] == null) {
-				current.children[index] = new Node<String>();
+				return null;
 			}
 			current = current.children[index];
 		}

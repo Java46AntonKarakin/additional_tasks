@@ -9,7 +9,7 @@ import quickDictionary_09.QuickDictionaryNodesSolution;
 class QuickDictionaryTests {
 
 	/* solution with two ArrayLists */
-//	QuickDictionary dic1 = new QuickDictionary();
+//	QuickDictionaryArrayListsSolution dic1 = new QuickDictionaryArrayListsSolution();
 	
 	/* solution with Node structure */
 	QuickDictionaryNodesSolution dic1 = new QuickDictionaryNodesSolution();

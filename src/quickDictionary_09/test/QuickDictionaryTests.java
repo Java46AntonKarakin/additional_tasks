@@ -1,7 +1,6 @@
 package quickDictionary_09.test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -10,66 +9,83 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.Test;
-
-import quickDictionary_09.QuickDictionaryArrayListsSolution;
-import quickDictionary_09.QuickDictionaryNodesSolution;
+import quickDictionary_09.Parent;
+import quickDictionary_09.QuickDictArrayList;
+import quickDictionary_09.QuickDictNodes;
 
 class QuickDictionaryTests {
 
 	/* solution with two ArrayLists */
-	QuickDictionaryArrayListsSolution dic1 = new QuickDictionaryArrayListsSolution();
+	Parent dicArrList = new QuickDictArrayList();
 
 	/* solution with Node structure */
-//	QuickDictionaryNodesSolution dic1 = new QuickDictionaryNodesSolution();
+	Parent dicNodes = new QuickDictNodes();
 
-	String mammals = "cat, gog, whale";
-	String birds = "eagle, chicken, papugay";
-	String fish = "shark, clownfish, catfish";
-	String reptiles = "lizard, snake, amphisbaenia";
+	static String mammals = "cat, gog, whale";
+	static String birds = "eagle, chicken, papugay";
+	static String fish = "shark, clownfish, catfish";
+	static String reptiles = "lizard, snake, amphisbaenia";
 
-	String[] arrayOfValues = { mammals, birds, fish, reptiles };
-	String[] arrayOfKeys = { "MAMMALS", "BIRDS", "FISH", "REPTILES" };
+	static String[] arrayOfValues = { mammals, birds, fish, reptiles };
+	static String[] arrayOfKeys = { "MAMMALS", "BIRDS", "FISH", "REPTILES" };
 	
 	
-	/* "Stream" style    		*/
-//	String[] valuesPT = getPseudoWordsArray(20000);
-//	String[] keysPT = getPseudoWordsArray(20000);
+	/*
+	 *  "Stream" style  
+	 *  values should be > 2000 otherways tests will take more than 10 sec per iteration		
+	 */
+	
+//	static String[] valuesPT = getPseudoWordsArray(2000);
+//	static String[] keysPT = getPseudoWordsArray(2000);
 	
 	/* "Double for" style   	 */
-	String[] valuesPT = getPseudoWordsArrayOld(20000);
-	String[] keysPT = getPseudoWordsArrayOld(20000);
+	static String[] valuesPT = getPseudoWordsArrayOld(20000);
+	static String[] keysPT = getPseudoWordsArrayOld(20000);
 	
 	static final int N_REPEATS = 5;
 
 	@Test
 	void dictionaryTest() {
+		dictFunctionalTest (dicArrList);
+		dictFunctionalTest (dicNodes);
+	}
+	
+	private void dictFunctionalTest (Parent dictionary) {
 		for (int i = 0; i < arrayOfKeys.length; i++) {
-			String put = dic1.put(arrayOfKeys[i], arrayOfValues[i]);
-			String get = dic1.get(arrayOfKeys[i]);
+			String put = dictionary.put(arrayOfKeys[i], arrayOfValues[i]);
+			String get = dictionary.get(arrayOfKeys[i]);
 			assertNull(put);
 			assertTrue(get.equals(arrayOfValues[i]));
-			assertEquals(get, dic1.put(arrayOfKeys[i], arrayOfValues[i]));
+			assertEquals(get, dictionary.put(arrayOfKeys[i], arrayOfValues[i]));
 		}
 	}
 
 	@Test
 	void dictionaryPerformanceTest() {
+		System.out.println("*".repeat(10) + "dicArrList" + "*".repeat(10));
+		performanceTest(dicArrList);
+		
+		System.out.println("*".repeat(10) + "dicNodes" + "*".repeat(10));
+		performanceTest(dicNodes);
+	}
+	
+	private static void performanceTest(Parent dictionary) {
+		
 		int iterationCounter = 1;
 		for (int j = 0; j < N_REPEATS; j++) {
 			
 			var startOfIteration = LocalDateTime.now();
 			
 			for (int i = 0; i < keysPT.length; i++) {
-				dic1.put(keysPT[i], valuesPT[i]);
+				dictionary.put(keysPT[i], valuesPT[i]);
 			}
 			
 			var putTestLength = ChronoUnit.MILLIS.between(startOfIteration, LocalDateTime.now());
 			var startOfGetTest = LocalDateTime.now();
 			
 			for (int i = 0; i < keysPT.length; i++) {
-				dic1.get(keysPT[i]);
+				dictionary.get(keysPT[i]);
 			}
 			
 			var getTestLength = ChronoUnit.MILLIS.between(startOfGetTest, LocalDateTime.now());
@@ -78,7 +94,7 @@ class QuickDictionaryTests {
 					iterationCounter++, putTestLength, getTestLength, commonLength );
 		}
 	}
-
+	
 	private static String[] getPseudoWordsArray(int numberOfElements) {
 		StringBuilder sb = new StringBuilder();
 		String[] res = new String[numberOfElements];

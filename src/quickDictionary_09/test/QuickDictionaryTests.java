@@ -3,6 +3,9 @@ package quickDictionary_09.test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -29,35 +32,45 @@ class QuickDictionaryTests {
 	String[] arrayOfValues = { mammals, birds, fish, reptiles };
 	String[] arrayOfKeys = { "MAMMALS", "BIRDS", "FISH", "REPTILES" };
 
-	String[] valuesPT = generateStringArray(10);
-	String[] keysPT = generateStringArray(10);
-	int repeats = 1;
+	String[] valuesPT = generateStringArray(3000);
+	String[] keysPT = generateStringArray(3000);
+	int repeats = 5;
 
 	@Test
 	void dictionaryTest() {
-
 		for (int i = 0; i < arrayOfKeys.length; i++) {
 			String put = dic1.put(arrayOfKeys[i], arrayOfValues[i]);
 			String get = dic1.get(arrayOfKeys[i]);
-
 			assertNull(put);
-
 			assertTrue(get.equals(arrayOfValues[i]));
-
 			assertEquals(get, dic1.put(arrayOfKeys[i], arrayOfValues[i]));
-
-			System.out.println(dic1.get(arrayOfKeys[i]));
 		}
 	}
 
 	@Test
 	void dictionaryPerformanceTest() {
+		int iterationCounter = 1;
 
+		
 		for (int j = 0; j < repeats; j++) {
+			
+			
+			LocalDateTime startOfGetTest;
+			
+			var startOfIteration = LocalDateTime.now();
 			for (int i = 0; i < keysPT.length; i++) {
 				dic1.put(keysPT[i], valuesPT[i]);
+			}
+			var putTestLength = ChronoUnit.MILLIS.between(startOfIteration, LocalDateTime.now());
+			startOfGetTest = LocalDateTime.now();
+			for (int i = 0; i < keysPT.length; i++) {
 				dic1.get(keysPT[i]);
 			}
+			var getTestLength = ChronoUnit.MILLIS.between(startOfGetTest, LocalDateTime.now());
+			var commonLength = putTestLength + getTestLength;
+			
+			System.out.printf("iteration #%d:     put = %s ms, get = %s ms, common time = %s ms;\n",
+					iterationCounter++, putTestLength, getTestLength, commonLength );
 		}
 	}
 

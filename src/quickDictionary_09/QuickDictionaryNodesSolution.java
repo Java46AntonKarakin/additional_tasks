@@ -1,16 +1,10 @@
 package quickDictionary_09;
 
 public class QuickDictionaryNodesSolution {
+	
 	private static class Node<String> {
 		String obj;
 		Node<String>[] children = new Node[26];
-
-		Node() {
-		}
-
-		Node(String obj) {
-			this.obj = obj;
-		}
 	}
 
 	Node<String> root = new Node<String>();

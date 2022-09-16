@@ -3,6 +3,7 @@ package quickDictionary_09.test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -28,9 +29,9 @@ class QuickDictionaryTests {
 	String[] arrayOfValues = { mammals, birds, fish, reptiles };
 	String[] arrayOfKeys = { "MAMMALS", "BIRDS", "FISH", "REPTILES" };
 
-	String[] valuesPT = generateStringArray(1000);
-	String[] keysPT = generateStringArray(1000);
-	int repeats = 1000;
+	String[] valuesPT = generateStringArray(10);
+	String[] keysPT = generateStringArray(10);
+	int repeats = 1;
 
 	@Test
 	void dictionaryTest() {
@@ -61,23 +62,25 @@ class QuickDictionaryTests {
 	}
 
 	String[] generateStringArray(int numberOfElements) {
-		
-		String[] res = new String[numberOfElements];
-		
 		StringBuilder sb = new StringBuilder();
-		
-		for (int i = 0; i < numberOfElements; i++) {
-			int length = (int) ((Math.random() * ((20 - 1) + 1)) + 1);
-			
-			for (int j = 0; j < length; j++) {
-				
-				char randomChar = (char) ((Math.random() * ((90 - 65) + 1)) + 65);
-				sb.append(randomChar);
-			}
-			res[i] = sb.toString();
-			sb = new StringBuilder();
-		}
+		String[] res = new String[numberOfElements];
+		IntStream.range(0, numberOfElements).forEach(x -> res[x] = getWord(sb));
 		return res;
 	}
+
+	private static String getWord(StringBuilder sb) {
+		IntStream.range(0, num())
+		.map(x -> num1())
+		.forEach(x -> sb.append((char)x));
+		return sb.toString();
+	}
+	
+    static int num () {
+    	return (int)(Math.random() * ((20 - 1) + 1) + 1);
+    }
+    
+    static int num1 () {
+    	return (int)((Math.random() * ((90 - 65) + 1)) + 65);
+    }
 
 }

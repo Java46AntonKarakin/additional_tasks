@@ -2,17 +2,17 @@ package quickDictionary_09;
 
 public class QuickDictNodes implements Parent{
 	
-	private static class Node<String> {
+	private static class Node {
 		String obj;
-		Node<String>[] children = new Node[26];
+		Node[] children = new Node[26];
 	}
 
-	Node<String> root = new Node<String>();
+	Node root = new Node();
 
 	@Override
 	public String put(String key, String value) {
 		try {
-			if (!key.matches("[A-Z]*")) {
+			if (!key.matches("[A-Z]*") && key.length() > 20) {
 				throw new IllegalArgumentException(String.format(" <<%s>> doesn't match ([A-Z])*", key));
 			}
 		} catch (IllegalArgumentException e) {
@@ -27,9 +27,9 @@ public class QuickDictNodes implements Parent{
 	@Override
 	public String get(String key) {
 		char[] keyCharArr = key.toCharArray();
-		Node<String> current = root;
+		Node current = root;
 		for (char ch : keyCharArr) {
-			int index = ch - 65;
+			int index = ch - 'A';
 			if (current.children[index] == null) {
 				return null;
 			}
@@ -41,11 +41,11 @@ public class QuickDictNodes implements Parent{
 
 	private void addArticle(String key, String value) {
 		char[] keyCharArr = key.toCharArray();
-		Node<String> current = root;
+		Node current = root;
 		for (char ch : keyCharArr) {
-			int index = ch - 65;
+			int index = ch - 'A';
 			if (current.children[index] == null) {
-				current.children[index] = new Node<String>();
+				current.children[index] = new Node();
 			}
 			current = current.children[index];
 		}

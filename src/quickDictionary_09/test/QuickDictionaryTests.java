@@ -25,12 +25,15 @@ class QuickDictionaryTests {
 	static String[] arrayOfKeys = { "MAMMALS", "BIRDS", "FISH", "REPTILES" };
 
 	/*
-	 * "Stream" style values should be > 2000 otherways tests will take more than 10
-	 * sec per iteration
+	 * "Stream" style 
+	 * values of valuesPT and keysPT should be < 10000 
+	 * otherways tests will take more than 10 sec per iteration for "dictArrList"
+	 * and more than 20 sec for "dictNodes"
 	 */
 
-//	static String[] valuesPT = getPseudoWordsArray(2000);
-//	static String[] keysPT = getPseudoWordsArray(2000);
+	
+//	static String[] valuesPT = getPseudoWordsArray(10000);
+//	static String[] keysPT = getPseudoWordsArray(10000);
 
 	/* "Double for" style */
 	static String[] valuesPT = getPseudoWordsArrayOld(10000);
@@ -94,9 +97,8 @@ class QuickDictionaryTests {
 	}
 
 	private static String[] getPseudoWordsArray(int numberOfElements) {
-		StringBuilder sb = new StringBuilder();
 		String[] res = new String[numberOfElements];
-		IntStream.range(0, numberOfElements).forEach(x -> res[x] = getWord(sb));
+		IntStream.range(0, numberOfElements).forEach(x -> res[x] = getWord());
 		return res;
 	}
 
@@ -120,7 +122,8 @@ class QuickDictionaryTests {
 		return res;
 	}
 
-	private static String getWord(StringBuilder sb) {
+	private static String getWord() {
+		StringBuilder sb = new StringBuilder();
 		IntStream.range(0, getRandomLength()).map(x -> getRandomChar()).forEach(x -> sb.append((char) x));
 		return sb.toString();
 	}

@@ -60,17 +60,13 @@ public class MaxRatedWinnersCollector {
 		 * @param value - next element from stream
 		 */
 		public void accumulate(T value) {
-			if (this.rater != null) {
-				var tmpRate = rater.applyAsLong(value);
-				if (currentMax == tmpRate) {
-					winners.add(value);
-				} else if (tmpRate > currentMax) {
-					winners.clear();
-					winners.add(value);
-					currentMax = tmpRate;
-				}
-			} else {
-				currentMax = rater.applyAsLong(value);
+			var tmpRate = rater.applyAsLong(value);
+			if (currentMax == tmpRate) {
+				winners.add(value);
+			} else if (tmpRate > currentMax) {
+				winners.clear();
+				winners.add(value);
+				currentMax = tmpRate;
 			}
 		}
 

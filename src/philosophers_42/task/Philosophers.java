@@ -1,8 +1,5 @@
 package philosophers_42.task;
 
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
-
 /*
 "The Dining Philosophers" Task – Resolve the Deadlock in class Philosophers
 
@@ -33,66 +30,67 @@ without getting starved to death.
 
  */
 public class Philosophers {
-	public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
 
-		Philosopher[] philosophers = new Philosopher[5];
-//		Object[] forks = new Object[philosophers.length];
-		ReentrantLock[] forks = new ReentrantLock[philosophers.length];
+        Philosopher[] philosophers = new Philosopher[5];
+        Object[] forks = new Object[philosophers.length];
 
-		for (int i = 0; i < forks.length; i++) {
-			forks[i] = new ReentrantLock(true);
-		}
+        for (int i = 0; i < forks.length; i++) {
+            forks[i] = new Object();
+        }
 
-		for (int i = 0; i < philosophers.length; i++) {
-			ReentrantLock leftFork = forks[i];
-			ReentrantLock rightFork = forks[(i + 1) % forks.length];
+        for (int i = 0; i < philosophers.length; i++) {
+            Object leftFork = forks[i];
+            Object rightFork = forks[(i + 1) % forks.length];
 
-			philosophers[i] = new Philosopher(leftFork, rightFork);
+            if (i%2==0) {
+            	philosophers[i] = new Philosopher(rightFork, leftFork);
+            } else {
+            	philosophers[i] = new Philosopher(leftFork, rightFork);
+            }
+            
 
-			Thread t = new Thread(philosophers[i], "Philosopher " + (i + 1));
-			t.start();
-		}
-	}
+            Thread t = new Thread(philosophers[i], "Philosopher " + (i + 1));
+            t.start();
+        }
+    }
+    static class Philosopher implements Runnable {
 
-	static class Philosopher implements Runnable {
+        private final Object leftFork;
+        private final Object rightFork;
 
-		private final ReentrantLock leftFork;
-		private final ReentrantLock rightFork;
+        public Philosopher(Object leftFork, Object rightFork) {
+            this.leftFork = leftFork;
+            this.rightFork = rightFork;
+        }
 
-		public Philosopher(ReentrantLock leftFork, ReentrantLock rightFork) {
-			this.leftFork = leftFork;
-			this.rightFork = rightFork;
-		}
+        private void doAction(String action) throws InterruptedException {
+            System.out.println(Thread.currentThread().getName() + " " + action);
+            Thread.sleep(((int) (Math.random() * 10)));
+        }
 
-		private void doAction(String action) throws InterruptedException {
-			System.out.println(Thread.currentThread().getName() + " " + action);
-			Thread.sleep(((int) (Math.random() * 10)));
-		}
 
-		@Override
-		public void run() {
-			try {
-				while (true) {
-					// thinking
-					doAction(System.nanoTime() + ": Thinking");
-					leftFork.tryLock((long)(Math.random() * 10), TimeUnit.NANOSECONDS);
-					try{
-						doAction(System.nanoTime() + ": Picked up left fork");
-						rightFork.tryLock((long)(Math.random() * 10), TimeUnit.NANOSECONDS);
-						try{
-							// eating
-							doAction(System.nanoTime() + ": Picked up right fork - eating");
-							doAction(System.nanoTime() + ": Put down right fork");
-						}finally {
-							rightFork.unlock();
-						}
-					}finally {
-						leftFork.unlock();
-					}
-				}
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-			}
-		}
-	}
+        @Override
+        public void run() {
+            try {
+                while (true) {
+                    // thinking
+                    doAction(System.nanoTime() + ": Thinking");
+                    synchronized (leftFork) {
+                        doAction(System.nanoTime() + ": Picked up left fork");
+                        synchronized (rightFork) {
+                            // eating
+                            doAction(System.nanoTime() + ": Picked up right fork - eating");
+
+                            doAction(System.nanoTime() + ": Put down right fork");
+                        }
+                        // Back to thinking
+                        doAction(System.nanoTime() + ": Put down left fork. Back to thinking");
+                    }
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
 }

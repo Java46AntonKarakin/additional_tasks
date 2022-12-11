@@ -13,7 +13,7 @@ public class Barrier {
 	}
 
 	public synchronized void await() {
-		if (++currentThreadNum != threadsCount) {
+		while (++currentThreadNum < threadsCount) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -30,7 +30,7 @@ public class Barrier {
 
 		Runnable r = () -> {
 			try {
-				Thread.sleep((int) (Math.random() * 10000));
+				Thread.sleep((int) (Math.random() * 1000));
 			} catch (InterruptedException e) {
 				// noop
 			}

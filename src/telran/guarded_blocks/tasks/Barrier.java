@@ -6,14 +6,14 @@ import java.util.stream.Stream;
 
 public class Barrier {
 	private final int threadsCount;
-	private int res = 0;
+	private int currentThreadNum = 0;
 
 	public Barrier(int threadsCount) {
 		this.threadsCount = threadsCount;
 	}
 
 	public synchronized void await() {
-		if (++res != threadsCount) {
+		if (++currentThreadNum != threadsCount) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
